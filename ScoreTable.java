@@ -1,33 +1,40 @@
+import java.util.HashMap;
+import java.util.Map;
 
 public class ScoreTable {
-	public int aces;
-	public int twos;
-	public int threes;
-	public int fours;
-	public int fives;
-	public int sixes;
-	public int threeOfKind;
-	public int fourOfKind;
-	public int fullhouse;
-	public int smallStraight;
-	public int largeStraight;
-	public int yahtzee;
-	public int chance;
+	public Map<String, Integer> scoreTable;
+	public int totalScore;
 	
 	
 	public ScoreTable() {
-		aces = 0;
-		twos = 0;
-		threes = 0;
-		fours = 0;
-		fives = 0;
-		sixes = 0;
-		threeOfKind = 0;
-		fourOfKind = 0;
-		fullhouse = 0;
-		smallStraight = 0;
-		largeStraight = 0;
-		yahtzee = 0;
-		chance = 0;
+		scoreTable = new HashMap<>();
+		scoreTable.put("aces", 0);
+		scoreTable.put("twos", 0);
+		scoreTable.put("threes", 0);
+		scoreTable.put("fours", 0);
+		scoreTable.put("fives", 0);
+		scoreTable.put("sixes", 0);
+		scoreTable.put("threeOfKind", 0);
+		scoreTable.put("fourOfKind", 0);
+		scoreTable.put("fullhouse", 0);
+		scoreTable.put("smallStraight", 0);
+		scoreTable.put("largeStraight", 0);
+		scoreTable.put("yahtzee", 0);
+		scoreTable.put("chance", 0);
+		totalScore = 0;
+	}
+	
+	public void countScore() {
+		for(String i : scoreTable.keySet()) {
+			totalScore += scoreTable.get(i);
+		}
+	}
+	
+	public String toString() {
+		String output="";
+		for(String i : scoreTable.keySet()) {
+			output = output + i + ": " + scoreTable.get(i) + "\n";
+		}
+		return output;
 	}
 }
