@@ -11,14 +11,13 @@ public class Main {
         Yahtzee game = new Yahtzee(player);
         System.out.println("Welcome to Yahtzee, " + player.getName() + "!");
 
-        while (true) {
+        for(int i=0;i<13;i++){
             System.out.println("Press 'enter' to roll the dice or type 'quit' to exit.");
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("quit")) {
                 break;
             }
-
-            game.playTurn();
+            game.playTurn(i);
         }
 
         System.out.println("Thanks for playing, " + player.getName() + "! Your final score is: " + player.getScore());
