@@ -1,11 +1,9 @@
 public class Player {
     private String name;
-    private int score;
     private ScoreTable scoreTable;
 
     public Player(String name) {
         this.name = name;
-        this.score = 0;
         this.scoreTable = new ScoreTable();
     }
 
@@ -14,10 +12,14 @@ public class Player {
     }
 
     public int getScore() {
-        return score;
+        return scoreTable.totalScore;
     }
-
-    public void addScore(int points) {
-        score += points;
+    
+    public ScoreTable getScoreTable() {
+    	return scoreTable;
+    }
+    
+    public String showScoreTable() {
+    	return this.scoreTable.toString();
     }
 }
