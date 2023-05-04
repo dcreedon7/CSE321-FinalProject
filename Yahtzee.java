@@ -62,6 +62,8 @@ public class Yahtzee {
         for(Dice die :dice) {
         	die.roll();
         }
+        System.out.print("Roll " + (numRolls + 1) + ":");
+        System.out.println();
         showDice();
         System.out.println();
         calculateScore();
@@ -97,11 +99,8 @@ public class Yahtzee {
                 }
             }
             numRolls++;
-            System.out.print("Round " + (round + 1) + ":");
+            System.out.print("Roll " + (numRolls + 1) + ":");
             System.out.println();
-            for(Dice die :dice) {
-            	die.roll();
-            }
             showDice();
             System.out.println();
             calculateScore();
