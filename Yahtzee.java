@@ -35,27 +35,123 @@ public class Yahtzee {
     	return player.showScoreTable();
     }
     
-    public void roundCheck(int fillIn) {
+    public boolean roundCheck(int fillIn) {
+    	boolean fillCheck=false;
     	switch(fillIn) {
-    	case 1: player.getScoreTable().scoreTable.put("aces", temp.scoreTable.get("aces"));break;
-    	case 2: player.getScoreTable().scoreTable.put("twos", temp.scoreTable.get("twos"));break;
-    	case 3: player.getScoreTable().scoreTable.put("threes", temp.scoreTable.get("threes"));break;
-    	case 4: player.getScoreTable().scoreTable.put("fours", temp.scoreTable.get("fours"));break;
-    	case 5: player.getScoreTable().scoreTable.put("fives", temp.scoreTable.get("fives"));break;
-    	case 6: player.getScoreTable().scoreTable.put("sixes", temp.scoreTable.get("sixes"));break;
-    	case 7: player.getScoreTable().scoreTable.put("threeOfKind", temp.scoreTable.get("threeOfKind"));break;
-    	case 8: player.getScoreTable().scoreTable.put("fourOfKind", temp.scoreTable.get("fourOfKind"));break;
-    	case 9: player.getScoreTable().scoreTable.put("fullhouse", temp.scoreTable.get("fullhouse"));break;
-    	case 10: player.getScoreTable().scoreTable.put("smallStraight", temp.scoreTable.get("smallStraight"));break;
-    	case 11: player.getScoreTable().scoreTable.put("largeStraight", temp.scoreTable.get("largeStraight"));break;
-    	case 12: player.getScoreTable().scoreTable.put("yahtzee", temp.scoreTable.get("yahtzee"));break;
-    	case 13: player.getScoreTable().scoreTable.put("chance", temp.scoreTable.get("chance"));break;	
+    	case 1: if(player.getScoreTable().scoreTable.get("aces")==0) {
+    		player.getScoreTable().scoreTable.put("aces", temp.scoreTable.get("aces"));
+    		fillCheck = true;
+    	}else {
+    		System.out.println("You can't refill this box, please choose another one");
+    		System.out.println();
+    	}
+    	break;
+    	case 2: if(player.getScoreTable().scoreTable.get("twos")==0) {
+    		player.getScoreTable().scoreTable.put("twos", temp.scoreTable.get("twos"));
+    		fillCheck = true;
+    	}else {
+    		System.out.println("You can't refill this box, please choose another one");
+    		System.out.println();
+    	}
+    	break;
+    	case 3: 
+    		if(player.getScoreTable().scoreTable.get("threes")==0) {
+    			player.getScoreTable().scoreTable.put("threes", temp.scoreTable.get("threes"));
+    			fillCheck = true;
+        	}else {
+        		System.out.println("You can't refill this box, please choose another one");
+        		System.out.println();
+        	}
+        	break;
+    	case 4: if(player.getScoreTable().scoreTable.get("fours")==0) {
+    		player.getScoreTable().scoreTable.put("fours", temp.scoreTable.get("fours"));
+    		fillCheck = true;
+    	}else {
+    		System.out.println("You can't refill this box, please choose another one");
+    		System.out.println();
+    	}
+    	break;
+    	case 5: if(player.getScoreTable().scoreTable.get("fives")==0) {
+    		player.getScoreTable().scoreTable.put("fives", temp.scoreTable.get("fives"));
+    		fillCheck = true;
+    	}else {
+    		System.out.println("You can't refill this box, please choose another one");
+    		System.out.println();
+    	}
+    	break;
+    	case 6: if(player.getScoreTable().scoreTable.get("sixes")==0) {
+    		player.getScoreTable().scoreTable.put("sixes", temp.scoreTable.get("sixes"));
+    		fillCheck = true;
+    	}else {
+    		System.out.println("You can't refill this box, please choose another one");
+    		System.out.println();
+    	}
+    	break;
+    	case 7: if(player.getScoreTable().scoreTable.get("threeOfKind")==0) {
+    		player.getScoreTable().scoreTable.put("threeOfKind", temp.scoreTable.get("threeOfKind"));
+    		fillCheck = true;
+    	}else {
+    		System.out.println("You can't refill this box, please choose another one");
+    		System.out.println();
+    	}
+    	break;
+    	case 8: if(player.getScoreTable().scoreTable.get("fourOfKind")==0) {
+    		player.getScoreTable().scoreTable.put("fourOfKind", temp.scoreTable.get("fourOfKind"));
+    		fillCheck = true;
+    	}else {
+    		System.out.println("You can't refill this box, please choose another one");
+    		System.out.println();
+    	}
+    	break;
+    	case 9: if(player.getScoreTable().scoreTable.get("fullhouse")==0) {
+    		player.getScoreTable().scoreTable.put("fullhouse", temp.scoreTable.get("fullhouse"));
+    		fillCheck = true;
+    	}else {
+    		System.out.println("You can't refill this box, please choose another one");
+    		System.out.println();
+    	}
+    	break;
+    	case 10: if(player.getScoreTable().scoreTable.get("smallStraight")==0) {
+    		player.getScoreTable().scoreTable.put("smallStraight", temp.scoreTable.get("smallStraight"));
+    		fillCheck = true;
+    	}else {
+    		System.out.println("You can't refill this box, please choose another one");
+    		System.out.println();
+    	}
+    	break;
+    	case 11: if(player.getScoreTable().scoreTable.get("largeStraight")==0) {
+    		player.getScoreTable().scoreTable.put("largeStraight", temp.scoreTable.get("largeStraight"));
+    		fillCheck = true;
+    	}else {
+    		System.out.println("You can't refill this box, please choose another one");
+    		System.out.println();
+    	}
+    	break;
+    	case 12: if(player.getScoreTable().scoreTable.get("yahtzee")==0) {
+    		player.getScoreTable().scoreTable.put("yahtzee", temp.scoreTable.get("yahtzee"));
+    		fillCheck = true;
+    	}else {
+    		System.out.println("You can't refill this box, please choose another one");
+    		System.out.println();
+    	}
+    	break;
+    	case 13: if(player.getScoreTable().scoreTable.get("chance")==0) {
+    		player.getScoreTable().scoreTable.put("chance", temp.scoreTable.get("chance"));
+    		fillCheck = true;
+    	}else {
+    		System.out.println("You can't refill this box, please choose another one");
+    		System.out.println();
+    	}
+    	break;	
     	}
     	System.out.println(this.player.showScoreTable());
+    	return fillCheck;
     }
     
     public void playTurn(int round) {
         int numRolls = 0;
+        int fillIn = 0;
+        boolean fillCheck = false;
         
         System.out.print("Round " + (round + 1) + ":");
         System.out.println();
@@ -71,10 +167,13 @@ public class Yahtzee {
         while (numRolls < 3) {
             if(numRolls == 2) {
             	Scanner scanner = new Scanner(System.in);
-                System.out.println("Please enter the box that you want to fill in on your score card (1-13). Type numebr to finish this round.");
+                
                 try {
-                	int fillIn = scanner.nextInt();
-                	roundCheck(fillIn);
+                	do {
+                		System.out.println("Please enter the box that you want to fill in on your score card (1-13). Type numebr to finish this round.");
+                		fillIn = scanner.nextInt();
+                    	fillCheck = roundCheck(fillIn);
+                	}while(fillCheck==false);
                 }catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                     System.out.println("Invalid input. Please enter the dice numbers you want to reroll (1-5) separated by spaces, or 'done' to finish.");
                 }
@@ -84,9 +183,12 @@ public class Yahtzee {
             System.out.println("Enter the dice you want to reroll (1-5), separated by spaces. Type 'done' to finish.");
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("done")) {
-            	System.out.println("Please choose a box( 1-13 ) you want to fill in this round");
-            	int fillIn = scanner.nextInt();
-            	roundCheck(fillIn);
+            	
+            	do {
+            		System.out.println("Please choose a box( 1-13 ) you want to fill in this round");
+            		fillIn = scanner.nextInt();
+                	fillCheck = roundCheck(fillIn);
+            	}while(fillCheck==false);
                 break;
             }
             String[] tokens = input.split(" ");
@@ -168,4 +270,3 @@ public class Yahtzee {
         return true;
     }
 }
-
