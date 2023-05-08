@@ -177,13 +177,33 @@ public class MainGui extends javax.swing.JFrame {
 		        		for (int i = 0; i < 16; i++) {
 		        			sTable.setValueAt(null, i, 2);
 		        		}
+		        		
+		        		// calculate the sum
 		        		sumAbove = 0;
 		        		for (int i = 0; i < 6; i++) {
 		        			
 		        			if (sTable.getValueAt(i, 1) != null) {
-		        				//sumAbove += sTable.getValueAt(i, 1);
+		        				sumAbove += Integer.parseInt("" + sTable.getValueAt(i, 1));
 		        			}
 		        		}
+		        		sTable.setValueAt(sumAbove, 6, 1);
+		        		
+		        		// calculate bonus
+		        		if (Integer.parseInt("" + sTable.getValueAt(6, 1)) > 63) {
+		        			sTable.setValueAt("35", 7, 1);
+		        		} else {
+		        			sTable.setValueAt("0", 7, 1);
+		        		}
+		        		
+		        		// calculate total score:
+		        		int total = 0;
+		        		if (round == 14) {
+		        			for (int i = 6; i < 15; i++) {
+		        				total += Integer.parseInt("" + sTable.getValueAt(i, 1));
+		        			}
+		        			sTable.setValueAt(total, 15, 1);
+		        		}
+		        		
 		        	}
 		            
 		            sTable.setEnabled(false); // Disable the sTable so that the value can't be changed again
@@ -247,12 +267,51 @@ public class MainGui extends javax.swing.JFrame {
 	                // pass off to the score table to handle rollCount and round
             	} else if (rollCount >= 3) {
             		rollDice.setText("Select Score");
-            	} else if (round >= 14) {
-            		int TotalScore = 0;
-            		//for (int i = 0; i < )
+            	} else if (round == 14) {
             		rollDice.setText("New Game?");
-            	} else if (rollDice.getText().equals("New Game?")) {// last else if for New Game...
-            		//
+            		round++;
+            		
+            	} else if (round >= 15) {// last else if for New Game...
+            		
+            		//reset table
+            		sTable.setModel(new javax.swing.table.DefaultTableModel(
+                            new Object [][] {
+                                {"Ones", null, null},
+                                {"Twos", null, null},
+                                {"Threes", null, null},
+                                {"Fours", null, null},
+                                {"Fives", null, null},
+                                {"Sixes", null, null},
+                                {"Sum", null, null},
+                                {"Bonus", "", null},
+                                {"Three of a Kind", null, null},
+                                {"Four of a Kind", null, null},
+                                {"Full House", null, null},
+                                {"Small Straight", null, null},
+                                {"Large Straight", null, null},
+                                {"Chance", null, null},
+                                {"Yahtzee", null, null},
+                                {"TOTAL SCORE", "", null}
+                            },
+                            new String [] {
+                                "Score Type:", "My Picks", "Potential"
+                            }
+                        ) {
+                            boolean[] canEdit = new boolean [] {
+                                false, false, false
+                            };
+
+                            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                                return canEdit [columnIndex];
+                            }
+                        });
+            		
+            		// reset counts
+            		rollCount = 0;
+            	    round = 1;
+            	    sumAbove = 0;
+            	    
+            	    rollDice.setText("Roll Dice");
             	}
                 
             }
