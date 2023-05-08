@@ -40,25 +40,25 @@ public class GameLogic {
                 score = calcNumScore(diceList, 6);
                 break;
             case "Three of a Kind":
-                score = calculateSumOfAKind(diceList, 3);
+                score = calcSumOfAKind(diceList, 3);
                 break;
             case "Four of a Kind":
-                score = calculateSumOfAKind(diceList, 4);
+                score = calcSumOfAKind(diceList, 4);
                 break;
             case "Full House":
-                score = calculateFullHouseScore(diceList);
+                score = calcFullHouseScore(diceList);
                 break;
             case "Small Straight":
-                score = calculateStraightScore(diceList, 4);
+                score = calcStraightScore(diceList, 4);
                 break;
             case "Large Straight":
-                score = calculateStraightScore(diceList, 5);
+                score = calcStraightScore(diceList, 5);
                 break;
             case "Yahtzee":
-                score = calculateYahtzeeScore(diceList);
+                score = calcYahtzeeScore(diceList);
                 break;
             case "Chance":
-                score = calculateSumOfAllDice(diceList);
+                score = calcSumOfAllDice(diceList);
                 break;
             default:
                 break;
@@ -78,21 +78,21 @@ public class GameLogic {
     }
 
     // Method to calculate the score for a given kind of dice (3 of a kind, 4 of a kind, etc.)
-    private static int calculateSumOfAKind(ArrayList<Dice> diceList, int kind) {
+    private static int calcSumOfAKind(ArrayList<Dice> diceList, int kind) {
         int[] counts = new int[6];
         for (Dice dice : diceList) {
             counts[dice.getValue() - 1]++;
         }
         for (int i = 0; i < 6; i++) {
             if (counts[i] >= kind) {
-                return calculateSumOfAllDice(diceList);
+                return calcSumOfAllDice(diceList);
             }
         }
         return 0;
     }
     
- // Method to calculate the sum of all dice
-    private static int calculateSumOfAllDice(ArrayList<Dice> diceList) {
+ // Method to calc the sum of all dice
+    private static int calcSumOfAllDice(ArrayList<Dice> diceList) {
         int sum = 0;
         for (Dice dice : diceList) {
             sum += dice.getValue();
@@ -101,8 +101,8 @@ public class GameLogic {
     }
 
     
- // Method to calculate the score for a straight (small or large)
-    private static int calculateStraightScore(ArrayList<Dice> diceList, int length) {
+ // Method to calc the score for a straight (small or large)
+    private static int calcStraightScore(ArrayList<Dice> diceList, int length) {
         int[] counts = new int[6];
         for (Dice dice : diceList) {
             counts[dice.getValue() - 1]++;
@@ -129,8 +129,8 @@ public class GameLogic {
         return 0;
     }
     
- // Method to calculate the score for a full house
-    private static int calculateFullHouseScore(ArrayList<Dice> diceList) {
+ // Method to calc the score for a full house
+    private static int calcFullHouseScore(ArrayList<Dice> diceList) {
         int[] counts = new int[6];
         for (Dice dice : diceList) {
             counts[dice.getValue() - 1]++;
@@ -151,8 +151,8 @@ public class GameLogic {
     }
 
     
- // Method to calculate the score for a Yahtzee (five of a kind)
-    private static int calculateYahtzeeScore(ArrayList<Dice> diceList) {
+ // Method to calc the score for a Yahtzee (five of a kind)
+    private static int calcYahtzeeScore(ArrayList<Dice> diceList) {
         int[] counts = new int[6];
         for (Dice dice : diceList) {
             counts[dice.getValue() - 1]++;
