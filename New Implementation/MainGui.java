@@ -60,6 +60,10 @@ public class MainGui extends javax.swing.JFrame {
         diceThree = new javax.swing.JButton();
         diceFour = new javax.swing.JButton();
         diceFive = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        roundText = new javax.swing.JTextPane();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        rollText = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -172,7 +176,9 @@ public class MainGui extends javax.swing.JFrame {
 		        	if (sTable.getValueAt(row, 2) != null) {
 		        		sTable.setValueAt(sTable.getValueAt(row, 2), row, 1);
 		        		rollCount = 0;
+		        		rollText.setText("Roll: 0");
 		        		round++;
+		        		roundText.setText("Round: " + round);
 		        		rollDice.setText("Roll Dice");
 		        		for (int i = 0; i < 16; i++) {
 		        			sTable.setValueAt(null, i, 2);
@@ -239,6 +245,7 @@ public class MainGui extends javax.swing.JFrame {
 	                diceFour.setText("" + diceList.get(3).getValue());
 	                diceFive.setText("" + diceList.get(4).getValue());
 	                rollCount++;
+	                rollText.setText("Roll: " + rollCount);
 	                
 	                // calculate scoretable stuff based on the roll that was made
 	                
@@ -312,6 +319,8 @@ public class MainGui extends javax.swing.JFrame {
             	    sumAbove = 0;
             	    
             	    rollDice.setText("Roll Dice");
+            	    roundText.setText("Round: 1");
+            	    rollText.setText("Roll: 0");
             	}
                 
             }
@@ -334,19 +343,31 @@ public class MainGui extends javax.swing.JFrame {
 
         diceOne.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         diceOne.setText("" + diceList.get(0).getValue());
+        diceOne.setEnabled(false);
 
         diceTwo.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         diceTwo.setText("" + diceList.get(1).getValue());
+        diceTwo.setEnabled(false);
 
         diceThree.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         diceThree.setText("" + diceList.get(2).getValue());
+        diceThree.setEnabled(false);
 
         diceFour.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         diceFour.setText("" + diceList.get(3).getValue());
+        diceFour.setEnabled(false);
 
         diceFive.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         diceFive.setText("" + diceList.get(4).getValue());
-        diceFive.setAutoscrolls(true);
+        diceFive.setEnabled(false);
+
+        roundText.setEditable(false);
+        roundText.setText("Round: 1");
+        jScrollPane3.setViewportView(roundText);
+
+        rollText.setEditable(false);
+        rollText.setText("Roll: 0");
+        jScrollPane4.setViewportView(rollText);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -371,14 +392,22 @@ public class MainGui extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(diceOne, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(9, 9, 9)
-                                .addComponent(diceTwo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(diceTwo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(diceThree, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(diceThree, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(diceFour, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                                .addComponent(diceFive, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(6, 6, 6)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(diceFour, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(diceFive, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(6, 6, 6)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(25, 25, 25)
@@ -416,6 +445,10 @@ public class MainGui extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
+                .addGap(79, 79, 79)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -434,7 +467,7 @@ public class MainGui extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                                      
+    }// </editor-fold>                                    
 
     /**
      * @param args the command line arguments
@@ -470,9 +503,12 @@ public class MainGui extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainGui().setVisible(true);
+                MainGui gui = new MainGui();
+                gui.setResizable(false); // disable resizing
+                gui.setVisible(true);
             }
         });
+
     }
 
     // Variables declaration - do not modify                     
@@ -494,7 +530,11 @@ public class MainGui extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable sTable;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTextPane roundText;
+    private javax.swing.JTextPane rollText;
     // End of variables declaration                   
 }
