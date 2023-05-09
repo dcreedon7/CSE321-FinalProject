@@ -1,6 +1,7 @@
 import java.util.ArrayList;	
 import java.util.Random;
 import javax.swing.JCheckBox;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -578,4 +579,77 @@ public class MainGui extends javax.swing.JFrame {
     private javax.swing.JTextPane roundText;
     private javax.swing.JTextPane rollText;
     // End of variables declaration                   
+
+    public Object[][] getTableData() {
+        DefaultTableModel model = (DefaultTableModel) sTable.getModel();
+        int rows = model.getRowCount();
+        int cols = model.getColumnCount();
+        Object[][] data = new Object[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                data[i][j] = model.getValueAt(i, j);
+            }
+        }
+        return data;
+    }
+
+	public void setsTable(javax.swing.JTable sTable) {
+		this.sTable = sTable;
+	}
+
+	public String getRollText() {
+		return rollText.getText();
+	}
+
+	public void setRollText(javax.swing.JTextPane rollText) {
+		this.rollText = rollText;
+	}
+
+	public GameLogic getLogic() {
+		return logic;
+	}
+
+	public void setLogic(GameLogic logic) {
+		this.logic = logic;
+	}
+
+	public ArrayList<Dice> getDiceList() {
+		return diceList;
+	}
+
+	public void setDiceList(ArrayList<Dice> diceList) {
+		this.diceList = diceList;
+	}
+
+	public int getRollCount() {
+		return rollCount;
+	}
+
+	public void setRollCount(int rollCount) {
+		this.rollCount = rollCount;
+	}
+
+	public int getRound() {
+		return round;
+	}
+
+	public void setRound(int round) {
+		this.round = round;
+	}
+
+	public int getSumAbove() {
+		return sumAbove;
+	}
+
+	public void setSumAbove(int sumAbove) {
+		this.sumAbove = sumAbove;
+	}
+
+	public int getYahtzeeCount() {
+		return yahtzeeCount;
+	}
+
+	public void setYahtzeeCount(int yahtzeeCount) {
+		this.yahtzeeCount = yahtzeeCount;
+	}
 }
