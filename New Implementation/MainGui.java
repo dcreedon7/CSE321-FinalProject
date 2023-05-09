@@ -13,9 +13,144 @@ public class MainGui extends javax.swing.JFrame {
     private int rollCount = 0;
     private int round = 1;
     private int sumAbove = 0;
+    private int yahtzeeCount = 0;
     
     public MainGui() {
         initComponents();
+    }
+    
+    public void rollDice() {
+        if (rollCount >= 3) {
+            rollDice.setText("Select Score");
+            return;
+        }
+
+        if (round == 14) {
+            rollDice.setText("New Game?");
+            round++;
+            return;
+        }
+
+        if (round >= 15) { // reset game
+            resetGame();
+            return;
+        }
+
+        if (rollCount == 0) { // uncheck dice so they can be rolled
+            uncheckDice();
+            setRollable(true);
+        }
+
+        rollAllDice();
+
+        // set the dice values
+        setDiceValues();
+
+        rollCount++;
+        rollText.setText("Roll: " + rollCount);
+
+        // update potential scores in the table
+        updateTable();
+    }
+
+    private void uncheckDice() {
+        jCheckBox1.setSelected(false);
+        jCheckBox2.setSelected(false);
+        jCheckBox3.setSelected(false);
+        jCheckBox4.setSelected(false);
+        jCheckBox5.setSelected(false);
+    }
+
+    private void setRollable(boolean rollable) {
+        for (Dice d : diceList) {
+            d.setRollable(rollable);
+        }
+    }
+
+    private void rollAllDice() {
+        for (Dice d : diceList) {
+            d.roll();
+        }
+    }
+
+    private void setDiceValues() {
+        diceOne.setText("" + diceList.get(0).getValue());
+        diceTwo.setText("" + diceList.get(1).getValue());
+        diceThree.setText("" + diceList.get(2).getValue());
+        diceFour.setText("" + diceList.get(3).getValue());
+        diceFive.setText("" + diceList.get(4).getValue());
+    }
+
+    private void updateTable() {
+        sTable.setValueAt(logic.calculateScoreForCategory("Ones", diceList), 0, 2);
+        sTable.setValueAt(logic.calculateScoreForCategory("Twos", diceList), 1, 2);
+        sTable.setValueAt(logic.calculateScoreForCategory("Threes", diceList), 2, 2);
+        sTable.setValueAt(logic.calculateScoreForCategory("Fours", diceList), 3, 2);
+        sTable.setValueAt(logic.calculateScoreForCategory("Fives", diceList), 4, 2);
+        sTable.setValueAt(logic.calculateScoreForCategory("Sixes", diceList), 5, 2);
+
+        sTable.setValueAt(logic.calculateScoreForCategory("Three of a Kind", diceList), 8, 2);
+        sTable.setValueAt(logic.calculateScoreForCategory("Four of a Kind", diceList), 9, 2);
+        sTable.setValueAt(logic.calculateScoreForCategory("Full House", diceList), 10, 2);
+        sTable.setValueAt(logic.calculateScoreForCategory("Small Straight", diceList), 11, 2);
+        sTable.setValueAt(logic.calculateScoreForCategory("Large Straight", diceList), 12, 2);
+        sTable.setValueAt(logic.calculateScoreForCategory("Chance", diceList), 13, 2);
+        
+        int yah = logic.calculateScoreForCategory("Yahtzee", diceList);
+        if (yah > 0) {
+        	yahtzeeCount++;
+        	if (yahtzeeCount > 1) {
+        		int bonus = Integer.parseInt("" + sTable.getValueAt(7, 1)) + 100;
+        		sTable.setValueAt(bonus, 7, 1);
+        	}
+        }
+        sTable.setValueAt(yah, 14, 2);
+        
+    }
+
+    private void resetGame() {
+    	sTable.setModel(new javax.swing.table.DefaultTableModel(
+                new Object [][] {
+                    {"Ones", null, null},
+                    {"Twos", null, null},
+                    {"Threes", null, null},
+                    {"Fours", null, null},
+                    {"Fives", null, null},
+                    {"Sixes", null, null},
+                    {"Sum", null, null},
+                    {"Bonus", "", null},
+                    {"Three of a Kind", null, null},
+                    {"Four of a Kind", null, null},
+                    {"Full House", null, null},
+                    {"Small Straight", null, null},
+                    {"Large Straight", null, null},
+                    {"Chance", null, null},
+                    {"Yahtzee", null, null},
+                    {"TOTAL SCORE", "", null}
+                },
+                new String [] {
+                    "Score Type:", "My Picks", "Potential"
+                }
+            ) {
+                boolean[] canEdit = new boolean [] {
+                    false, false, false
+                };
+
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return canEdit [columnIndex];
+                }
+            });
+    	
+	    	// reset all counts back to 0
+			rollCount = 0;
+		    round = 1;
+		    sumAbove = 0;
+		    yahtzeeCount = 0;
+		    
+		    // reset all text to original
+		    rollDice.setText("Roll Dice");
+		    roundText.setText("Round: 1");
+		    rollText.setText("Roll: 0");
     }
 
     /**
@@ -153,7 +288,7 @@ public class MainGui extends javax.swing.JFrame {
         jScrollPane1.setViewportView(sTable);
         
       //Add mouse listener to table
-		sTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        sTable.addMouseListener(new java.awt.event.MouseAdapter() {
 		    public void mouseClicked(java.awt.event.MouseEvent evt) {
 		        int row = sTable.rowAtPoint(evt.getPoint());
 		        // int col = sTable.columnAtPoint(evt.getPoint());
@@ -182,10 +317,18 @@ public class MainGui extends javax.swing.JFrame {
 		        		sTable.setValueAt(sumAbove, 6, 1);
 		        		
 		        		// calculate bonus category
-		        		if (Integer.parseInt("" + sTable.getValueAt(6, 1)) > 63) {
-		        			sTable.setValueAt("35", 7, 1);
-		        		} else {
-		        			sTable.setValueAt("0", 7, 1);
+		        		if (Integer.parseInt("" + sTable.getValueAt(6, 1)) > 63) { // if the sum category is > 63
+		        			String val = "35";
+		        			if (yahtzeeCount > 1) {
+		        				val = "" + 100 * (yahtzeeCount - 1) + 35;
+		        			}
+		        			sTable.setValueAt(val, 7, 1);
+		        		} else { // if the sum category is not greater than 63
+		        			String val = "0";
+		        			if (yahtzeeCount > 1) {
+		        				val = "" + 100 * (yahtzeeCount - 1);
+		        			}
+		        			sTable.setValueAt(val, 7, 1);
 		        		}
 		        		
 		        		// calculate total score of game at round 14 (game over)
@@ -206,105 +349,11 @@ public class MainGui extends javax.swing.JFrame {
 		});
 
         rollDice.setText("Roll Dice");
+        
+        // Roll Dice Button
         rollDice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-            	
-            	// dice roll checks to see if the rollCount is less than 3
-            	if (rollCount < 3 && round < 14) { // if the rollcount isnt three and the round count is less than 14 then you can play the game
-            		if (rollCount == 0) { // roll count of 0 unchecks dice so they can be rolled
-            			jCheckBox1.setSelected(false);
-            			jCheckBox2.setSelected(false);
-            			jCheckBox3.setSelected(false);
-            			jCheckBox4.setSelected(false);
-            			jCheckBox5.setSelected(false);
-            			diceList.get(0).setRollable(true);
-            			diceList.get(1).setRollable(true);
-            			diceList.get(2).setRollable(true);
-            			diceList.get(3).setRollable(true);
-            			diceList.get(4).setRollable(true);
-            		}
-            		for (Dice d : diceList) { // roll the dice
-            			d.roll();
-	                }
-	                
-	                diceOne.setText("" + diceList.get(0).getValue()); // set the dice values
-	                diceTwo.setText("" + diceList.get(1).getValue());
-	                diceThree.setText("" + diceList.get(2).getValue());
-	                diceFour.setText("" + diceList.get(3).getValue());
-	                diceFive.setText("" + diceList.get(4).getValue());
-	                rollCount++;
-	                rollText.setText("Roll: " + rollCount);
-	                
-	                // sets all the potential values in the table
-	                sTable.setValueAt(logic.calculateScoreForCategory("Ones", diceList), 0, 2);
-	                sTable.setValueAt(logic.calculateScoreForCategory("Twos", diceList), 1, 2);
-	                sTable.setValueAt(logic.calculateScoreForCategory("Threes", diceList), 2, 2);
-	                sTable.setValueAt(logic.calculateScoreForCategory("Fours", diceList), 3, 2);
-	                sTable.setValueAt(logic.calculateScoreForCategory("Fives", diceList), 4, 2);
-	                sTable.setValueAt(logic.calculateScoreForCategory("Sixes", diceList), 5, 2);
-	                
-	                sTable.setValueAt(logic.calculateScoreForCategory("Three of a Kind", diceList), 8, 2);
-	                sTable.setValueAt(logic.calculateScoreForCategory("Four of a Kind", diceList), 9, 2);
-	                sTable.setValueAt(logic.calculateScoreForCategory("Full House", diceList), 10, 2);
-	                sTable.setValueAt(logic.calculateScoreForCategory("Small Straight", diceList), 11, 2);
-	                sTable.setValueAt(logic.calculateScoreForCategory("Large Straight", diceList), 12, 2);
-	                sTable.setValueAt(logic.calculateScoreForCategory("Chance", diceList), 13, 2);
-	                sTable.setValueAt(logic.calculateScoreForCategory("Yahtzee", diceList), 14, 2);
-	                
-	                
-	                // pass off to the score table to handle rollCount and round
-            	} else if (rollCount >= 3) {
-            		rollDice.setText("Select Score");
-            	} else if (round == 14) {
-            		rollDice.setText("New Game?");
-            		round++;
-            		
-            	} else if (round >= 15) {// last else if for New Game...
-            		
-            		//reset table values back to how they were at the start of the game
-            		sTable.setModel(new javax.swing.table.DefaultTableModel(
-                            new Object [][] {
-                                {"Ones", null, null},
-                                {"Twos", null, null},
-                                {"Threes", null, null},
-                                {"Fours", null, null},
-                                {"Fives", null, null},
-                                {"Sixes", null, null},
-                                {"Sum", null, null},
-                                {"Bonus", "", null},
-                                {"Three of a Kind", null, null},
-                                {"Four of a Kind", null, null},
-                                {"Full House", null, null},
-                                {"Small Straight", null, null},
-                                {"Large Straight", null, null},
-                                {"Chance", null, null},
-                                {"Yahtzee", null, null},
-                                {"TOTAL SCORE", "", null}
-                            },
-                            new String [] {
-                                "Score Type:", "My Picks", "Potential"
-                            }
-                        ) {
-                            boolean[] canEdit = new boolean [] {
-                                false, false, false
-                            };
-
-                            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                                return canEdit [columnIndex];
-                            }
-                        });
-            		
-            		// reset all counts back to 0
-            		rollCount = 0;
-            	    round = 1;
-            	    sumAbove = 0;
-            	    
-            	    // reset all text to original
-            	    rollDice.setText("Roll Dice");
-            	    roundText.setText("Round: 1");
-            	    rollText.setText("Roll: 0");
-            	}
-                
+            	rollDice();
             }
         });
 
@@ -491,6 +540,16 @@ public class MainGui extends javax.swing.JFrame {
             }
         });
 
+    }
+    
+    // when a user clicks a the button, this method runs the operations for "correctness"
+    public static void buttonOperations() {
+    	
+    }
+    
+    // when a user clicks a table this method runs the operations for "correctness"
+    public static void tableOperations() {
+    	
     }
 
     // Variables declaration - do not modify                     
