@@ -4,12 +4,9 @@ import javax.swing.JCheckBox;
 
 /**
  *
- * @author Miami
+ * @author Miami CSE321 Group
  */
 public class MainGui extends javax.swing.JFrame {
-//	private Player player = new Player("John");
-//	private Yahtzee game = new Yahtzee(player);
-	// private Player player;
     
 	private GameLogic logic;
 	private ArrayList<Dice> diceList;
@@ -20,12 +17,6 @@ public class MainGui extends javax.swing.JFrame {
     public MainGui() {
         initComponents();
     }
-    
-    
-//    public void rollDice(int index) {
-//        Dice dice = diceList.get(index);
-//        dice.roll();
-//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -70,7 +61,6 @@ public class MainGui extends javax.swing.JFrame {
         jCheckBox1.setText("Dice 1");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-//                jCheckBox1ActionPerformed(evt);
             	JCheckBox checkBox = (JCheckBox) evt.getSource();
                 if (checkBox.isSelected()) {
                 	diceList.get(0).setRollable(false);
@@ -128,7 +118,7 @@ public class MainGui extends javax.swing.JFrame {
             }
         });
 
-        sTable.setModel(new javax.swing.table.DefaultTableModel(
+        sTable.setModel(new javax.swing.table.DefaultTableModel( // creates a 3 x 15 table
                 new Object [][] {
                     {"Ones", null, null},
                     {"Twos", null, null},
@@ -167,24 +157,21 @@ public class MainGui extends javax.swing.JFrame {
 		    public void mouseClicked(java.awt.event.MouseEvent evt) {
 		        int row = sTable.rowAtPoint(evt.getPoint());
 		        // int col = sTable.columnAtPoint(evt.getPoint());
-		        if (sTable.getValueAt(row, 1) == null) {
+		        if (sTable.getValueAt(row, 1) == null) { // if column 1 is null when clicked then check column 2
 		        	
-//		        	if (sTable.getValueAt(row, 1) != null) {
-//		        		sTable.setValueAt(sTable.getValueAt(row, 2), row, 1);
-//		        	}
 		        	// resets table
-		        	if (sTable.getValueAt(row, 2) != null) {
-		        		sTable.setValueAt(sTable.getValueAt(row, 2), row, 1);
+		        	if (sTable.getValueAt(row, 2) != null) { // if column 2 is not null then add value to column 1
+		        		sTable.setValueAt(sTable.getValueAt(row, 2), row, 1); // sets the value of column 1 in selected row
 		        		rollCount = 0;
 		        		rollText.setText("Roll: 0");
 		        		round++;
 		        		roundText.setText("Round: " + round);
 		        		rollDice.setText("Roll Dice");
-		        		for (int i = 0; i < 16; i++) {
+		        		for (int i = 0; i < 16; i++) { // sets all of 2 back to null after user selects
 		        			sTable.setValueAt(null, i, 2);
 		        		}
 		        		
-		        		// calculate the sum
+		        		// calculate the sum category
 		        		sumAbove = 0;
 		        		for (int i = 0; i < 6; i++) {
 		        			
@@ -194,20 +181,21 @@ public class MainGui extends javax.swing.JFrame {
 		        		}
 		        		sTable.setValueAt(sumAbove, 6, 1);
 		        		
-		        		// calculate bonus
+		        		// calculate bonus category
 		        		if (Integer.parseInt("" + sTable.getValueAt(6, 1)) > 63) {
 		        			sTable.setValueAt("35", 7, 1);
 		        		} else {
 		        			sTable.setValueAt("0", 7, 1);
 		        		}
 		        		
-		        		// calculate total score:
+		        		// calculate total score of game at round 14 (game over)
 		        		int total = 0;
 		        		if (round == 14) {
 		        			for (int i = 6; i < 15; i++) {
 		        				total += Integer.parseInt("" + sTable.getValueAt(i, 1));
 		        			}
 		        			sTable.setValueAt(total, 15, 1);
+		        			rollDice.setText("Continue...");
 		        		}
 		        		
 		        	}
@@ -222,8 +210,8 @@ public class MainGui extends javax.swing.JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
             	
             	// dice roll checks to see if the rollCount is less than 3
-            	if (rollCount < 3 && round < 14) {
-            		if (rollCount == 0) {
+            	if (rollCount < 3 && round < 14) { // if the rollcount isnt three and the round count is less than 14 then you can play the game
+            		if (rollCount == 0) { // roll count of 0 unchecks dice so they can be rolled
             			jCheckBox1.setSelected(false);
             			jCheckBox2.setSelected(false);
             			jCheckBox3.setSelected(false);
@@ -235,11 +223,11 @@ public class MainGui extends javax.swing.JFrame {
             			diceList.get(3).setRollable(true);
             			diceList.get(4).setRollable(true);
             		}
-            		for (Dice d : diceList) {
+            		for (Dice d : diceList) { // roll the dice
             			d.roll();
 	                }
 	                
-	                diceOne.setText("" + diceList.get(0).getValue());
+	                diceOne.setText("" + diceList.get(0).getValue()); // set the dice values
 	                diceTwo.setText("" + diceList.get(1).getValue());
 	                diceThree.setText("" + diceList.get(2).getValue());
 	                diceFour.setText("" + diceList.get(3).getValue());
@@ -247,14 +235,7 @@ public class MainGui extends javax.swing.JFrame {
 	                rollCount++;
 	                rollText.setText("Roll: " + rollCount);
 	                
-	                // calculate scoretable stuff based on the roll that was made
-	                
-//	                for (int i = 0; i < 15; i++) {
-//	                	String temp = "" + sTable.getValueAt(0, i); //row column
-//	                	int val = logic.calculateScoreForCategory(temp, diceList);
-//	                	sTable.setValueAt(val, i, 2); // value, row, column
-//	                }
-	                
+	                // sets all the potential values in the table
 	                sTable.setValueAt(logic.calculateScoreForCategory("Ones", diceList), 0, 2);
 	                sTable.setValueAt(logic.calculateScoreForCategory("Twos", diceList), 1, 2);
 	                sTable.setValueAt(logic.calculateScoreForCategory("Threes", diceList), 2, 2);
@@ -280,7 +261,7 @@ public class MainGui extends javax.swing.JFrame {
             		
             	} else if (round >= 15) {// last else if for New Game...
             		
-            		//reset table
+            		//reset table values back to how they were at the start of the game
             		sTable.setModel(new javax.swing.table.DefaultTableModel(
                             new Object [][] {
                                 {"Ones", null, null},
@@ -313,11 +294,12 @@ public class MainGui extends javax.swing.JFrame {
                             }
                         });
             		
-            		// reset counts
+            		// reset all counts back to 0
             		rollCount = 0;
             	    round = 1;
             	    sumAbove = 0;
             	    
+            	    // reset all text to original
             	    rollDice.setText("Roll Dice");
             	    roundText.setText("Round: 1");
             	    rollText.setText("Roll: 0");
