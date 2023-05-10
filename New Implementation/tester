@@ -1,0 +1,31 @@
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Random;
+
+import org.junit.jupiter.api.Test;
+
+class tester {
+
+	@Test
+	public void testRoll1() {
+	    Dice dice = new Dice();
+	    dice.roll();
+	    assertTrue(dice.isRollable());
+	    assertFalse(dice.getValue()<1);
+	}
+	
+	@Test
+	public void testRoll2() {
+	    Dice dice = new Dice();
+	    assertTrue(dice.isRollable());
+	    assertTrue(dice.getValue()<1);
+	}
+	
+	@Test
+	public void testRoll3() {
+	    Dice dice = new Dice();
+	    dice.roll();
+	    assertTrue(dice.isRollable());
+	    assertFalse(dice.getValue()<1);
+	}
+}
